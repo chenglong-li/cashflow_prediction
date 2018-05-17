@@ -1,0 +1,383 @@
+<!DOCTYPE html><html
+lang="en-US" prefix="og: http://ogp.me/ns#"><head><meta
+charset="UTF-8"><meta
+http-equiv="X-UA-Compatible" content="IE=edge" /><link
+rel="profile" href="http://gmpg.org/xfn/11"><title>Forecasting Time Series Data with Convolutional Neural Networks - Machine Learning Applications</title><meta
+name="description" content="Forecasting time series data with convolutional neural networks - different approaches that can be used for time series with convolutional neural nets."/><link
+rel="canonical" href="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/" /><meta
+property="og:locale" content="en_US" /><meta
+property="og:type" content="article" /><meta
+property="og:title" content="Forecasting Time Series Data with Convolutional Neural Networks - Machine Learning Applications" /><meta
+property="og:description" content="Forecasting time series data with convolutional neural networks - different approaches that can be used for time series with convolutional neural nets." /><meta
+property="og:url" content="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/" /><meta
+property="og:site_name" content="Machine Learning Applications" /><meta
+property="article:tag" content="convolutional neural networks" /><meta
+property="article:tag" content="deep learning" /><meta
+property="article:tag" content="forecasting time series data" /><meta
+property="article:tag" content="machine learning" /><meta
+property="article:tag" content="time series" /><meta
+property="article:tag" content="time series prediction" /><meta
+property="article:section" content="Stock data analysis" /><meta
+property="article:published_time" content="2017-05-14T00:43:26+00:00" /><meta
+property="article:modified_time" content="2017-12-05T02:00:49+00:00" /><meta
+property="og:updated_time" content="2017-12-05T02:00:49+00:00" /><meta
+property="og:image" content="http://intelligentonlinetools.com/blog/wp-content/uploads/2017/05/time-series-LSTM-300x164.png" /><meta
+property="og:image" content="http://intelligentonlinetools.com/blog/wp-content/uploads/2017/05/CNN-300x97.png" /><meta
+name="twitter:card" content="summary_large_image" /><meta
+name="twitter:description" content="Forecasting time series data with convolutional neural networks - different approaches that can be used for time series with convolutional neural nets." /><meta
+name="twitter:title" content="Forecasting Time Series Data with Convolutional Neural Networks - Machine Learning Applications" /><meta
+name="twitter:image" content="http://intelligentonlinetools.com/blog/wp-content/uploads/2017/05/time-series-LSTM-300x164.png" /><script type='application/ld+json'>{"@context":"http:\/\/schema.org","@type":"WebSite","@id":"#website","url":"http:\/\/intelligentonlinetools.com\/blog\/","name":"Machine Learning Applications","potentialAction":{"@type":"SearchAction","target":"http:\/\/intelligentonlinetools.com\/blog\/?s={search_term_string}","query-input":"required name=search_term_string"}}</script><link
+rel='dns-prefetch' href='//s0.wp.com' /><link
+rel='dns-prefetch' href='//s.gravatar.com' /><link
+rel='dns-prefetch' href='//fonts.googleapis.com' /><link
+rel='dns-prefetch' href='//s.w.org' /><link
+href='https://fonts.gstatic.com' crossorigin rel='preconnect' /><link
+rel="alternate" type="application/rss+xml" title="Machine Learning Applications &raquo; Feed" href="http://intelligentonlinetools.com/blog/feed/" /><link
+rel="alternate" type="application/rss+xml" title="Machine Learning Applications &raquo; Comments Feed" href="http://intelligentonlinetools.com/blog/comments/feed/" /><link
+rel="alternate" type="application/rss+xml" title="Machine Learning Applications &raquo; Forecasting Time Series Data with Convolutional Neural Networks Comments Feed" href="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/feed/" /><script type="text/javascript">/*<![CDATA[*/window._wpemojiSettings={"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/intelligentonlinetools.com\/blog\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.7.10"}};!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),!(j.toDataURL().length<3e3)&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,65039,8205,55356,57096),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,55356,57096),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55357,56425,55356,57341,8205,55357,56507),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55357,56425,55356,57341,55357,56507),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);/*]]>*/</script><style type="text/css">img.wp-smiley,img.emoji{display:inline !important;border:none !important;box-shadow:none !important;height:1em !important;width:1em !important;margin:0
+.07em !important;vertical-align:-0.1em !important;background:none !important;padding:0
+!important}</style><link
+rel='stylesheet' id='wp-color-picker-css'  href="http://intelligentonlinetools.com/blog/wp-admin/css/color-picker.min.css?39c4bb" type='text/css' media='all' /><link
+rel='stylesheet' id='accua-forms-api-base-css'  href="http://intelligentonlinetools.com/blog/wp-content/plugins/contact-forms/accua-form-api.css?39c4bb" type='text/css' media='all' /><link
+rel='stylesheet' id='generate-fonts-css'  href='//fonts.googleapis.com/css?family=Open+Sans:300,300italic,regular,italic,600,600italic,700,700italic,800,800italic' type='text/css' media='all' /><link
+rel='stylesheet' id='adsns-css'  href="http://intelligentonlinetools.com/blog/wp-content/plugins/adsense-plugin/css/adsns.css?v=1.42&#038;ver=4.7.10&amp;39c4bb" type='text/css' media='all' /><link
+rel='stylesheet' id='wp-polls-css'  href="http://intelligentonlinetools.com/blog/wp-content/plugins/wp-polls/polls-css.css?39c4bb" type='text/css' media='all' /><style id='wp-polls-inline-css' type='text/css'>.wp-polls
+.pollbar{margin:1px;font-size:6px;line-height:8px;height:8px;background-image:url('http://intelligentonlinetools.com/blog/wp-content/plugins/wp-polls/images/default/pollbg.gif');border:1px
+solid #c8c8c8}</style><link
+rel='stylesheet' id='generate-style-grid-css'  href="http://intelligentonlinetools.com/blog/wp-content/themes/generatepress/css/unsemantic-grid.min.css?39c4bb" type='text/css' media='all' /><link
+rel='stylesheet' id='generate-style-css'  href="http://intelligentonlinetools.com/blog/wp-content/themes/generatepress/style.css?39c4bb" type='text/css' media='all' /><style id='generate-style-inline-css' type='text/css'>body{background-color:#efefef;color:#3a3a3a}a,a:visited{color:#1e73be;text-decoration:none}a:hover,a:focus,a:active{color:#000;text-decoration:none}body .grid-container{max-width:1100px}body,button,input,select,textarea{font-family:"Open Sans",sans-serif}.main-navigation .main-nav ul ul li
+a{font-size:14px}@media (max-width:768px){.main-title{font-size:30px}h1{font-size:30px}h2{font-size:25px}}.site-header{background-color:#fff;color:#3a3a3a}.site-header a,.site-header a:visited{color:#3a3a3a}.main-title a,.main-title a:hover,.main-title a:visited{color:#222}.site-description{color:#999}.main-navigation,.main-navigation ul
+ul{background-color:#222}.main-navigation .main-nav ul li a,.menu-toggle{color:#fff}.main-navigation .main-nav ul li > a:hover,.main-navigation .main-nav ul li > a:focus, .main-navigation .main-nav ul li.sfHover>a{color:#fff;background-color:#3f3f3f}button.menu-toggle:hover,button.menu-toggle:focus,.main-navigation .mobile-bar-items a,.main-navigation .mobile-bar-items a:hover,.main-navigation .mobile-bar-items a:focus{color:#fff}.main-navigation .main-nav ul li[class*="current-menu-"]>a{color:#fff;background-color:#3f3f3f}.main-navigation .main-nav ul li[class*="current-menu-"] > a:hover,.main-navigation .main-nav ul li[class*="current-menu-"].sfHover>a{color:#fff;background-color:#3f3f3f}.main-navigation ul
+ul{background-color:#3f3f3f}.main-navigation .main-nav ul ul li
+a{color:#fff}.main-navigation .main-nav ul ul li > a:hover,.main-navigation .main-nav ul ul li > a:focus,.main-navigation .main-nav ul ul li.sfHover>a{color:#fff;background-color:#4f4f4f}.main-navigation .main-nav ul ul li[class*="current-menu-"]>a{color:#fff;background-color:#4f4f4f}.main-navigation .main-nav ul ul li[class*="current-menu-"] > a:hover,.main-navigation .main-nav ul ul li[class*="current-menu-"].sfHover>a{color:#fff;background-color:#4f4f4f}.separate-containers .inside-article, .separate-containers .comments-area, .separate-containers .page-header, .one-container .container, .separate-containers .paging-navigation,.inside-page-header{background-color:#fff}.entry-meta{color:#888}.entry-meta a,.entry-meta a:visited{color:#666}.entry-meta a:hover{color:#1e73be}.sidebar
+.widget{background-color:#fff}.sidebar .widget .widget-title{color:#000}.footer-widgets{background-color:#fff}.footer-widgets .widget-title{color:#000}.site-info{color:#fff;background-color:#222}.site-info a,.site-info a:visited{color:#fff}.site-info a:hover{color:#606060}.footer-bar .widget_nav_menu .current-menu-item
+a{color:#606060}input[type="text"],input[type="email"],input[type="url"],input[type="password"],input[type="search"],input[type="tel"],input[type="number"],textarea{color:#666;background-color:#fafafa;border-color:#ccc}input[type="text"]:focus,input[type="email"]:focus,input[type="url"]:focus,input[type="password"]:focus,input[type="search"]:focus,input[type="tel"]:focus,input[type="number"]:focus,textarea:focus{color:#666;background-color:#fff;border-color:#bfbfbf}button,html input[type="button"],input[type="reset"],input[type="submit"],.button,.button:visited{color:#fff;background-color:#666}button:hover,html input[type="button"]:hover,input[type="reset"]:hover,input[type="submit"]:hover,.button:hover,button:focus,html input[type="button"]:focus,input[type="reset"]:focus,input[type="submit"]:focus,.button:focus{color:#fff;background-color:#3f3f3f}@media (max-width:768px){.separate-containers .inside-article, .separate-containers .comments-area, .separate-containers .page-header, .separate-containers .paging-navigation, .one-container .site-content,.inside-page-header{padding:30px}}.main-navigation ul
+ul{top:auto}</style><link
+rel='stylesheet' id='generate-mobile-style-css'  href="http://intelligentonlinetools.com/blog/wp-content/themes/generatepress/css/mobile.min.css?39c4bb" type='text/css' media='all' /><link
+rel='stylesheet' id='font-awesome-css'  href="http://intelligentonlinetools.com/blog/wp-content/themes/generatepress/css/font-awesome.min.css?39c4bb" type='text/css' media='all' /> <!--[if lt IE 9]><link
+rel='stylesheet' id='generate-ie-css'  href="http://intelligentonlinetools.com/blog/wp-content/themes/generatepress/css/ie.min.css?39c4bb" type='text/css' media='all' /> <![endif]--><link
+rel='stylesheet' id='wordpress-popular-posts-css'  href="http://intelligentonlinetools.com/blog/wp-content/plugins/wordpress-popular-posts/style/wpp.css?39c4bb" type='text/css' media='all' /><link
+rel='stylesheet' id='A2A_SHARE_SAVE-css'  href="http://intelligentonlinetools.com/blog/wp-content/plugins/add-to-any/addtoany.min.css?39c4bb" type='text/css' media='all' /><link
+rel='stylesheet' id='social-logos-css'  href="http://intelligentonlinetools.com/blog/wp-content/plugins/jetpack/_inc/social-logos/social-logos.min.css?39c4bb" type='text/css' media='all' /><link
+rel='stylesheet' id='jetpack_css-css'  href="http://intelligentonlinetools.com/blog/wp-content/plugins/jetpack/css/jetpack.css?39c4bb" type='text/css' media='all' /><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-includes/js/jquery/jquery.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-includes/js/jquery/jquery-migrate.min.js?39c4bb"></script><script type='text/javascript'>var related_posts_js_options={"post_heading":"h4"};</script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-content/plugins/jetpack/modules/related-posts/related-posts.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-content/plugins/add-to-any/addtoany.min.js?39c4bb"></script><link
+rel='https://api.w.org/' href='http://intelligentonlinetools.com/blog/wp-json/' /><link
+rel="EditURI" type="application/rsd+xml" title="RSD" href="http://intelligentonlinetools.com/blog/xmlrpc.php?rsd" /><link
+rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://intelligentonlinetools.com/blog/wp-includes/wlwmanifest.xml?39c4bb" /><meta
+name="generator" content="WordPress 4.7.10" /><link
+rel='shortlink' href='http://wp.me/p7h1IJ-j0' /><link
+rel="alternate" type="application/json+oembed" href="http://intelligentonlinetools.com/blog/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fintelligentonlinetools.com%2Fblog%2F2017%2F05%2F14%2Ftime-series-prediction-with-convolutional-neural-networks%2F" /><link
+rel="alternate" type="text/xml+oembed" href="http://intelligentonlinetools.com/blog/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fintelligentonlinetools.com%2Fblog%2F2017%2F05%2F14%2Ftime-series-prediction-with-convolutional-neural-networks%2F&#038;format=xml" /><script type="text/javascript">window.a2a_config=window.a2a_config||{};a2a_config.callbacks=[];a2a_config.overlays=[];a2a_config.templates={};</script><script type="text/javascript" src="https://static.addtoany.com/menu/page.js" async="async"></script><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?39c4bb"></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-3416618249440971",enable_page_level_ads:true});</script><link
+rel='dns-prefetch' href='//v0.wordpress.com'><link
+rel='dns-prefetch' href='//i0.wp.com'><link
+rel='dns-prefetch' href='//i1.wp.com'><link
+rel='dns-prefetch' href='//i2.wp.com'><style type='text/css'>img#wpstats{display:none}</style><link
+rel="pingback" href="http://intelligentonlinetools.com/blog/xmlrpc.php"><meta
+name="viewport" content="width=device-width, initial-scale=1"> <script type="text/javascript">/*<![CDATA[*/var sampling_active=0;var sampling_rate=100;var do_request=false;if(!sampling_active){do_request=true;}else{var num=Math.floor(Math.random()*sampling_rate)+1;do_request=(1===num);}
+if(do_request){var xhr=(window.XMLHttpRequest)?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP"),url='http://intelligentonlinetools.com/blog/wp-admin/admin-ajax.php',params='action=update_views_ajax&token=0cbf362b58&wpp_id=1178';xhr.open("POST",url,true);xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");xhr.onreadystatechange=function(){if(4===xhr.readyState&&200===xhr.status){if(window.console&&window.console.log){window.console.log(xhr.responseText);}}};xhr.send(params);}/*]]>*/</script><style type="text/css" id="syntaxhighlighteranchor"></style></head><body
+itemtype='http://schema.org/Blog' itemscope='itemscope' class="post-template-default single single-post postid-1178 single-format-standard  right-sidebar nav-below-header contained-header separate-containers active-footer-widgets-1 nav-aligned-left header-aligned-left dropdown-hover"> <a
+class="screen-reader-text skip-link" href="#content" title="Skip to content">Skip to content</a> <header
+itemtype="http://schema.org/WPHeader" itemscope="itemscope" id="masthead" class="site-header grid-container grid-parent"><div
+class="inside-header grid-container grid-parent"><div
+class="header-widget"> <aside
+id="text-18" class="widget inner-padding widget_text"><div
+class="textwidget"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?39c4bb"></script><script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-3416618249440971",enable_page_level_ads:true});</script></div> </aside></div><div
+class="site-branding"><p
+class="main-title" itemprop="headline"> <a
+href="http://intelligentonlinetools.com/blog/" rel="home"> Machine Learning Applications </a></p></div></div> </header> <nav
+itemtype="http://schema.org/SiteNavigationElement" itemscope="itemscope" id="site-navigation" class="main-navigation grid-container grid-parent"><div
+class="inside-navigation grid-container grid-parent"> <button
+class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"> <span
+class="mobile-menu">Menu</span> </button><div
+id="primary-menu" class="main-nav"><ul
+id="menu-menu-1" class=" menu sf-menu"><li
+id="menu-item-1445" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1445"><a
+href="http://intelligentonlinetools.com/cgi-bin/analytics/ml.cgi">ML Sandbox &#8211; Machine Learning Online</a></li><li
+id="menu-item-1553" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1553"><a
+href="http://www.intelligentonlinetools.com/cgi-bin/nn/neural_networks_with_python.cgi">Neural Nets with Python</a></li><li
+id="menu-item-1554" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1554"><a
+href="http://intelligentonlinetools.com/blog/category/machine-learning/">Machine Learning</a></li><li
+id="menu-item-1555" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-has-children menu-item-1555"><a
+href="http://intelligentonlinetools.com/blog/2017/11/23/regression-and-classification-decision-trees-building-with-python-and-running-online/">Decision Trees<span
+role="button" class="dropdown-menu-toggle" aria-expanded="false"></span></a><ul
+class="sub-menu"><li
+id="menu-item-1557" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-has-children menu-item-1557"><a
+href="http://intelligentonlinetools.com/blog/2017/02/18/building-decision-trees-in-python/">Building Decision Trees in Python<span
+role="button" class="dropdown-menu-toggle" aria-expanded="false"></span></a><ul
+class="sub-menu"><li
+id="menu-item-1556" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-1556"><a
+href="http://intelligentonlinetools.com/blog/2017/02/18/building-decision-trees-in-python-handling-categorical-data/">Building Decision Trees in Python – Handling Categorical Data</a></li></ul></li></ul></li><li
+id="menu-item-1846" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1846"><a
+href="http://intelligentonlinetools.com/blog/site-map/">Sitemap</a></li><li
+id="menu-item-1443" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1443"><a
+href="http://intelligentonlinetools.com/blog/sample-page/">About Me</a></li></ul></div></div> </nav><div
+id="page" class="hfeed site grid-container container grid-parent"><div
+id="content" class="site-content"><div
+id="primary" class="content-area grid-parent mobile-grid-100 grid-75 tablet-grid-75"> <main
+id="main" class="site-main"><div
+class='code-block code-block-3' style='margin: 8px 0px;'><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?39c4bb"></script> <ins
+class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-3416618249440971"
+data-ad-slot="3937619131"
+data-ad-format="auto"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?39c4bb"></script> <ins
+class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-3416618249440971"
+data-ad-slot="6817555374"
+data-ad-format="link"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div> <article
+id="post-1178" class="post-1178 post type-post status-publish format-standard hentry category-artificial-intelligence category-machine-learning category-stock-data-analysis tag-convolutional-neural-networks tag-deep-learning tag-forecasting-time-series-data tag-machine-learning tag-time-series tag-time-series-prediction" itemtype='http://schema.org/CreativeWork' itemscope='itemscope'><div
+class="inside-article"> <header
+class="entry-header"><h1 class="entry-title" itemprop="headline">Forecasting Time Series Data with Convolutional Neural Networks</h1><div
+class="entry-meta"> <span
+class="posted-on"><a
+href="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/" title="12:43 am" rel="bookmark"><time
+class="entry-date published" datetime="2017-05-14T00:43:26+00:00" itemprop="datePublished">May 14, 2017</time><time
+class="updated" datetime="2017-12-05T02:00:49+00:00" itemprop="dateModified">December 5, 2017</time></a></span> <span
+class="byline"><span
+class="author vcard" itemtype="http://schema.org/Person" itemscope="itemscope" itemprop="author">by <a
+class="url fn n" href="http://intelligentonlinetools.com/blog/author/owygs156/" title="View all posts by owygs156" rel="author" itemprop="url"><span
+class="author-name" itemprop="name">owygs156</span></a></span></span></div> </header><div
+class="entry-content" itemprop="text"><p><b>Convolutional neural networks(CNN)</b> is increasingly important concept in computer science and finds more and more applications in different fields. Many posts on the web are about applying convolutional neural networks for image classification as CNN is very useful type of neural networks for image classification. But convolutional neural networks can also be used for applications other than images, such as <b>time series prediction</b>. This post is reviewing existing papers and web resources about applying CNN for <strong>forecasting time series data</strong>. Some resources also contain python source code.</p><p>Deep neural networks opened new opportunities for time series prediction. New types of neural networks such as LSTM (variant of the RNN), CNN were applied for time series forecasting.  For example here is the link for <strong>predicting time series with LSTM</strong>. [1] You can find here also the code. The code provides nice graph with ability to compare actual data and predicted data. (See figure below, sourced from <a
+href=http://www.jakob-aungiers.com/articles/a/LSTM-Neural-Network-for-Time-Series-Prediction target="_blank">[1]</a>) Predictions start at different points of time so you can see and compare performance for several predictions.<br
+/> <figure
+id="attachment_1253" style="width: 890px" class="wp-caption alignnone"><img
+src="https://i0.wp.com/intelligentonlinetools.com/blog/wp-content/uploads/2017/05/time-series-LSTM.png?resize=825%2C543" alt="" class="size-medium wp-image-1253" srcset="https://i0.wp.com/intelligentonlinetools.com/blog/wp-content/uploads/2017/05/time-series-LSTM.png?zoom=2&amp;resize=900%2C592 1800w, https://i0.wp.com/intelligentonlinetools.com/blog/wp-content/uploads/2017/05/time-series-LSTM.png?zoom=3&amp;resize=900%2C592 2700w" sizes="(max-width: 825px) 100vw, 825px" data-recalc-dims="1" /><figcaption
+class="wp-caption-text">Time series with LSTM</figcaption></figure></p><p>Below review is showing different approaches that can be used for forecasting time series data with convolutional neural networks.</p><p>1. <strong>Raw Data</strong><br
+/> The simplest way to feed data into neural network is to use <strong>raw data</strong>. Here is the link [2] to results of experiments with different types of neural networks including CNN. In this study  stock data such as <strong>Date,Open,High,Low,Close,Volume,Adj Close</strong> were used with 3 types of networks: MLP, CNN and RNN.</p><p>CNN <strong>architecture</strong> was used as 2-layer convolutional neural network (combination of convolution and max-pooling layers) with one fully-connected layer. To improve performance the author suggests using different features (not only scaled time series) like some technical indicators, volume of sales.<br
+/> According to <a
+href="http://cs231n.github.io/convolutional-networks/#pool" target="blank">[12]</a> it is common to periodically insert a <strong>Pooling layer</strong> in-between successive Convolution layers in a CNN architecture. Its function is to progressively reduce the spatial size of the representation to reduce the amount of parameters and computation in the network, and hence to also control overfitting. The Pooling Layer operates independently on every depth slice of the input and resizes it spatially, using the MAX operation.</p><p>2. <strong>Automatic Selection of Features</strong><br
+/> Transforming data before inputting to neural network is common practice. We can use feature based methods like described here in <a
+href="http://machinelearningmastery.com/feature-selection-time-series-forecasting-python/" target="_blank">Feature-selection-time-series-forecasting-python</a> or filtering methods like removing trend, seasonality  or low pass / high pass filtering.<br
+/> With deep learning it is possible to lean features automatically. For example in one research the authors introduce a deep learning framework for multivariate time series classification: <strong>Multi-Channels Deep Convolutional Neural Networks (MCDCNN)</strong>. Multivariate time series are separated into univariate ones and perform feature learning on each univariate series individually. Then  a<br
+/> normal MLP is concatenated at the end of feature learning to do classification. [3]<br
+/> The CNN <strong>architecture</strong> consists of 2 layer CNN (combination of filter, activation and pooling layers) and 2 Fully connected layers that represent classification MLP.</p><p>3. <strong>Fully Convolutional Neural Network (FCN)</strong><br
+/> In this study different neural network architectures such as Multilayer Perceptrons, <strong>Fully convolutional NN (FCN)</strong>, Residual Network are proposed. For FCN authors build the final networks by stacking three convolution blocks with the filter sizes {128, 256, 128} in each block. Unlike the MCNN and MC-CNN, any <strong>pooling operation</strong> is excluded. This strategy  helps to prevent overfitting. <a
+href="https://standardfrancis.wordpress.com/2015/04/16/batch-normalization/" target=blank>Batch normalization</a> is applied to speed up the convergence speed and help improve generalization.</p><p>After the convolution blocks, the features are fed into a <strong>global average pooling layer</strong> instead of a fully connected layer, which largely reduces the number of weights. The final label is produced by a softmax layer. [4] Thus the <strong>architecture</strong> of neural network consists of three convolution blocks and global average pooling and softmax layers in the end.</p><p>4. <strong>Different Data Transformations</strong><br
+/> In this study [5] CNNs were trained with different data transformations, which included: the entire dataset, spatial clustering, and PCA decomposition. Data was also fit to the hidden modules of a <strong>Clockwork Recurrent Neural Network</strong>. This type of recurrent network (CRNN) has the advantage of maintaining a high-temporal-resolution memory in its hidden layers after training.</p><p>This network also overcomes the problem of the vanishing gradient found in other RNNs by partitioning the neurons in its hidden layers as different ”sub-clocks” that are able to capture the input to the network at different time steps.  Here you can find more about CRNN [11]. According to this paper a <strong>clockwork RNN architecture</strong> is similar to a simple RNN with an input, output and hidden layer. The hidden layer is partitioned into g modules each with its own clock rate. Within each module the neurons are fully interconnected.</p><p>5. <strong>Analysing Multiple Time Series Relationships</strong><br
+/> This paper [6] focuses on analyzing multiple time series relationships such as <strong>correlations</strong> between them. Authors show that deep learning methods for time series processing are comparable to the other approaches and have wide opportunities for further improvement. Range of methods is discussed and code optimisations is applied for the convolutional neural network for the forecasting time series data domain.</p><p>6. <strong>Data Augmentation</strong><br
+/> In this study two approaches are proposed to artificially increase the size of training sets. The first one is based on data-augmentation techniques. The second one consists in mixing different training sets and learning the network in a semi-supervised way. The authors show that these two approaches improve the overall classification performance.</p><p>7. <strong>Encoding data as image</strong><br
+/> Another methodology for time series  with convolutional neural networks that got popular with deep learning is <strong>encoding data as the image</strong>. Here data is encoded as images which feed to neural network.  This enables the use of techniques from computer vision for classification.<br
+/> Here [8] is the link where python script can be found for encoding data as image. It encodes data into formats such as GAF, MTF. The script has the dependencies on python modules such as Numpy, Pandas,  Matplolib and Cpickle.</p><p>Theory of using image encoded data is described in [9]. In this paper a novel framework proposes  to encode time series data as different types of images, namely, <strong>Gramian Angular Fields (GAF) and Markov Transition Fields (MTF)</strong>.</p><p><strong>Learning Traffic as Images</strong>:<br
+/> This paper [10] proposes a convolutional neural network (CNN)-based method that learns traffic as images and predicts large-scale, network-wide traffic speed with a high accuracy. Spatiotemporal traffic dynamics are converted to images describing the time and space relations of traffic flow via a <strong>two-dimensional time-space matrix</strong>. A CNN is applied to the image following two consecutive steps: abstract traffic feature extraction and network-wide traffic speed prediction. CNN <strong>architecture</strong> consists of several convolutional and pooling layers and fully connected layer in the end for prediction.</p><p><strong>Conclusion</strong></p><p>Deep learning and convolutional neural networks created new opportunities for forecasting time series data domain. The above text presents different techniques that can be used in time series prediction with convolutional neural networks. The common part that we can see in most of studies is that feature extraction can be done via deep learning automatically in CNN or in other words, CNNs can learn features on their own. Below you can see architecture of CNN at very high level. The actual implementations can vary in different ways, some of them were shown above.</p> <figure
+id="attachment_1246" style="width: 1090px" class="wp-caption alignnone"><img
+src="https://i0.wp.com/intelligentonlinetools.com/blog/wp-content/uploads/2017/05/CNN.png?resize=825%2C265" alt="CNN Architecture for Forecasting Time Series Data" class="size-medium wp-image-1246" srcset="https://i0.wp.com/intelligentonlinetools.com/blog/wp-content/uploads/2017/05/CNN.png?resize=300%2C97 300w, https://i0.wp.com/intelligentonlinetools.com/blog/wp-content/uploads/2017/05/CNN.png?resize=768%2C248 768w, https://i0.wp.com/intelligentonlinetools.com/blog/wp-content/uploads/2017/05/CNN.png?resize=1024%2C330 1024w, https://i0.wp.com/intelligentonlinetools.com/blog/wp-content/uploads/2017/05/CNN.png?w=1061 1061w" sizes="(max-width: 825px) 100vw, 825px" data-recalc-dims="1" /><figcaption
+class="wp-caption-text">CNN Architecture for Forecasting Time Series Data</figcaption></figure><p><strong>References</strong></p><p>1. <a
+href=http://www.jakob-aungiers.com/articles/a/LSTM-Neural-Network-for-Time-Series-Prediction target="_blank"> LSTM NEURAL NETWORK FOR TIME SERIES PREDICTION</a><br
+/> 2. <a
+href=https://medium.com/@alexrachnog/neural-networks-for-algorithmic-trading-part-one-simple-time-series-forecasting-f992daa1045a target="_blank">Neural networks for algorithmic trading. Part One — Simple time series forecasting </a><br
+/> 3. <a
+href=http://staff.ustc.edu.cn/~cheneh/paper_pdf/2014/Yi-Zheng-WAIM2014.pdf target="_blank">Time Series Classification Using Multi-Channels Deep Convolutional Neural Networks</a><br
+/> 4. <a
+href=https://arxiv.org/pdf/1611.06455.pdf target="_blank">Time Series Classification from Scratch with Deep Neural Networks: A Strong Baseline </a><br
+/> 5. <a
+href=http://cs231n.stanford.edu/reports/2016/pdfs/334_Report.pdf target="_blank">Assessing Neuroplasticity with Convolutional and Recurrent Neural Networks </a><br
+/> 6. <a
+href=http://proceedings.mlr.press/v46/romaszko15.pdf target="_blank">Signal Correlation Prediction Using Convolutional Neural Networks </a><br
+/> 7. <a
+href=https://halshs.archives-ouvertes.fr/halshs-01357973/document target="_blank">Data Augmentation for Time Series Classification using Convolutional Neural Networks. </a><br
+/> 8. <a
+href=https://github.com/cauchyturing/Imaging-time-series-to-improve-classification-and-imputation/wiki target="_blank">Imaging-time-series-to-improve-classification-and-imputation</a><br
+/> 9. <a
+href=https://pdfs.semanticscholar.org/32e7/b2ddc781b571fa023c205753a803565543e7.pdf target="_blank">Encoding Time Series as Images for Visual Inspection and Classification Using<br
+/> Tiled Convolutional Neural Networks</a><br
+/> 10. <a
+href=https://arxiv.org/ftp/arxiv/papers/1701/1701.04245.pdf target="_blank">Learning Traffic as Images: A Deep Convolutional Neural Network for Large-Scale Transportation Network Speed Prediction</a><br
+/> 11. <a
+href="http://proceedings.mlr.press/v32/koutnik14.pdf"target="_blank">A Clockwork RNN</a><br
+/> 12. <a
+href="http://cs231n.github.io/convolutional-networks/" target="blank">CS231n Convolutional Neural Networks for Visual Recognition</a></p><div
+class="sharedaddy sd-sharing-enabled"><div
+class="robots-nocontent sd-block sd-social sd-social-icon sd-sharing"><h3 class="sd-title">Share this:</h3><div
+class="sd-content"><ul><li
+class="share-print"><a
+rel="nofollow" data-shared="" class="share-print sd-button share-icon no-text" href="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/#print" target="_blank" title="Click to print"><span></span><span
+class="sharing-screen-reader-text">Click to print (Opens in new window)</span></a></li><li
+class="share-twitter"><a
+rel="nofollow" data-shared="sharing-twitter-1178" class="share-twitter sd-button share-icon no-text" href="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/?share=twitter" target="_blank" title="Click to share on Twitter"><span></span><span
+class="sharing-screen-reader-text">Click to share on Twitter (Opens in new window)</span></a></li><li
+class="share-facebook"><a
+rel="nofollow" data-shared="sharing-facebook-1178" class="share-facebook sd-button share-icon no-text" href="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/?share=facebook" target="_blank" title="Click to share on Facebook"><span></span><span
+class="sharing-screen-reader-text">Click to share on Facebook (Opens in new window)</span></a></li><li
+class="share-google-plus-1"><a
+rel="nofollow" data-shared="sharing-google-1178" class="share-google-plus-1 sd-button share-icon no-text" href="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/?share=google-plus-1" target="_blank" title="Click to share on Google+"><span></span><span
+class="sharing-screen-reader-text">Click to share on Google+ (Opens in new window)</span></a></li><li
+class="share-reddit"><a
+rel="nofollow" data-shared="" class="share-reddit sd-button share-icon no-text" href="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/?share=reddit" target="_blank" title="Click to share on Reddit"><span></span><span
+class="sharing-screen-reader-text">Click to share on Reddit (Opens in new window)</span></a></li><li
+class="share-email"><a
+rel="nofollow" data-shared="" class="share-email sd-button share-icon no-text" href="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/?share=email" target="_blank" title="Click to email this to a friend"><span></span><span
+class="sharing-screen-reader-text">Click to email this to a friend (Opens in new window)</span></a></li><li
+class="share-linkedin"><a
+rel="nofollow" data-shared="sharing-linkedin-1178" class="share-linkedin sd-button share-icon no-text" href="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/?share=linkedin" target="_blank" title="Click to share on LinkedIn"><span></span><span
+class="sharing-screen-reader-text">Click to share on LinkedIn (Opens in new window)</span></a></li><li
+class="share-tumblr"><a
+rel="nofollow" data-shared="" class="share-tumblr sd-button share-icon no-text" href="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/?share=tumblr" target="_blank" title="Click to share on Tumblr"><span></span><span
+class="sharing-screen-reader-text">Click to share on Tumblr (Opens in new window)</span></a></li><li
+class="share-end"></li></ul></div></div></div><div
+id='jp-relatedposts' class='jp-relatedposts' ><h3 class="jp-relatedposts-headline"><em>Related</em></h3></div><div
+class='code-block code-block-2' style='margin: 8px 0px;'><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?39c4bb"></script> <ins
+class="adsbygoogle"
+style="display:inline-block;width:728px;height:90px"
+data-ad-client="ca-pub-3416618249440971"
+data-ad-slot="3332207133"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?39c4bb"></script> <ins
+class="adsbygoogle"
+style="display:inline-block;width:728px;height:15px"
+data-ad-client="ca-pub-3416618249440971"
+data-ad-slot="4100339809"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div></div> <footer
+class="entry-meta"> <span
+class="cat-links"><span
+class="screen-reader-text">Categories </span><a
+href="http://intelligentonlinetools.com/blog/category/artificial-intelligence/" rel="category tag">Artificial Intelligence</a>, <a
+href="http://intelligentonlinetools.com/blog/category/machine-learning/" rel="category tag">Machine Learning</a>, <a
+href="http://intelligentonlinetools.com/blog/category/stock-data-analysis/" rel="category tag">Stock data analysis</a></span><span
+class="tags-links"><span
+class="screen-reader-text">Tags </span><a
+href="http://intelligentonlinetools.com/blog/tag/convolutional-neural-networks/" rel="tag">convolutional neural networks</a>, <a
+href="http://intelligentonlinetools.com/blog/tag/deep-learning/" rel="tag">deep learning</a>, <a
+href="http://intelligentonlinetools.com/blog/tag/forecasting-time-series-data/" rel="tag">forecasting time series data</a>, <a
+href="http://intelligentonlinetools.com/blog/tag/machine-learning/" rel="tag">machine learning</a>, <a
+href="http://intelligentonlinetools.com/blog/tag/time-series/" rel="tag">time series</a>, <a
+href="http://intelligentonlinetools.com/blog/tag/time-series-prediction/" rel="tag">time series prediction</a></span> <nav
+id="nav-below" class="post-navigation"> <span
+class="screen-reader-text">Post navigation</span><div
+class="nav-previous"><span
+class="prev" title="Previous"><a
+href="http://intelligentonlinetools.com/blog/2017/04/27/exploratory-data-analysis-eda-no-programming-is-needed/" rel="prev">Exploratory Data Analysis (EDA) &#8211; No Programming is Needed</a></span></div><div
+class="nav-next"><span
+class="next" title="Next"><a
+href="http://intelligentonlinetools.com/blog/2017/06/17/time-series-prediction-with-convolutional-neural-networks-and-keras/" rel="next">Time Series Prediction with Convolutional Neural Networks and Keras</a></span></div> </nav> </footer></div> </article><div
+class="comments-area"><div
+id="comments"><div
+id="respond" class="comment-respond"><h3 id="reply-title" class="comment-reply-title">Leave a Comment <small><a
+rel="nofollow" id="cancel-comment-reply-link" href="/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/#respond" style="display:none;">Cancel reply</a></small></h3><form
+action="http://intelligentonlinetools.com/blog/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate><p
+class="comment-form-comment"><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p><input
+placeholder="Name *" id="author" name="author" type="text" value="" size="30" /> <input
+placeholder="Email *" id="email" name="email" type="text" value="" size="30" /> <input
+placeholder="Website" id="url" name="url" type="text" value="" size="30" /><div
+class="g-recaptcha" data-sitekey="6Lf4tS8UAAAAAKxRy-5GV9UGZzOjBNyfuQYESYMR" data-theme="light"></div><script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script><p
+class="form-submit"><input
+name="submit" type="submit" id="submit" class="submit" value="Post Comment" /> <input
+type='hidden' name='comment_post_ID' value='1178' id='comment_post_ID' /> <input
+type='hidden' name='comment_parent' id='comment_parent' value='0' /></p><p
+style="display: none;"><input
+type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="e44bbedb09" /></p><p
+class="comment-subscription-form"><input
+type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label
+class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p
+class="comment-subscription-form"><input
+type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;" /> <label
+class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p><p
+style="display: none;"><input
+type="hidden" id="ak_js" name="ak_js" value="221"/></p></form></div></div></div> </main></div><div
+id="right-sidebar" itemtype="http://schema.org/WPSideBar" itemscope="itemscope" role="complementary" class="widget-area grid-25 tablet-grid-25 grid-parent sidebar"><div
+class="inside-right-sidebar"> <aside
+id="text-3" class="widget inner-padding widget_text"><div
+class="textwidget"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?39c4bb"></script> <ins
+class="adsbygoogle"
+style="display:block"
+data-ad-client="ca-pub-3416618249440971"
+data-ad-slot="8978424331"
+data-ad-format="auto"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div> </aside><aside
+id="text-16" class="widget inner-padding widget_text"><div
+class="textwidget"><font
+size=-1><a
+href=http://intelligentonlinetools.com/cheatsheets/python_data_manipulation.php target="_blank">Cheat Sheet for Data Manipulation with Python for Machine Learning and Data Science</a></font></div> </aside><aside
+id="text-10" class="widget inner-padding widget_text"><div
+class="textwidget"><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?39c4bb"></script> <ins
+class="adsbygoogle"
+style="display:inline-block;width:180px;height:90px"
+data-ad-client="ca-pub-3416618249440971"
+data-ad-slot="4329050732"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div> </aside> <aside
+id="recent-posts-4" class="widget inner-padding widget_recent_entries"><h4 class="widget-title">Recent Posts</h4><ul><li> <a
+href="http://intelligentonlinetools.com/blog/2018/04/17/lstm-neural-network-training-techniques-tuning-hyperparameters/">LSTM Neural Network Training &#8211; Few Useful Techniques for Tuning Hyperparameters and Saving Time</a></li><li> <a
+href="http://intelligentonlinetools.com/blog/2018/04/03/machine-learning-stock-market-prediction-lstm-keras/">Machine Learning Stock Market Prediction with LSTM Keras</a></li><li> <a
+href="http://intelligentonlinetools.com/blog/2018/02/27/time-series-prediction-lstm-keras/">Time Series Prediction with LSTM and Keras for Multiple Steps Ahead</a></li><li> <a
+href="http://intelligentonlinetools.com/blog/2018/02/24/prediction-next-stock-market-correction/">Prediction on Next Stock Market Correction</a></li><li> <a
+href="http://intelligentonlinetools.com/blog/2018/02/10/how-to-create-data-visualization-for-association-rules-in-data-mining/">How to Create Data Visualization for Association Rules in Data Mining</a></li></ul> </aside> <aside
+id="blog_subscription-2" class="widget inner-padding jetpack_subscription_widget"><h4 class="widget-title">Subscribe to Blog via Email</h4><form
+action="#" method="post" accept-charset="utf-8" id="subscribe-blog-blog_subscription-2"><div
+id="subscribe-text"><p>Enter your email address to subscribe to this blog and receive notifications of new posts by email.</p></div><p
+id="subscribe-email"> <label
+id="jetpack-subscribe-label" for="subscribe-field-blog_subscription-2"> Email Address </label> <input
+type="email" name="email" required="required" class="required" value="" id="subscribe-field-blog_subscription-2" placeholder="Email Address" /></p><p
+id="subscribe-submit"> <input
+type="hidden" name="action" value="subscribe" /> <input
+type="hidden" name="source" value="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/" /> <input
+type="hidden" name="sub-type" value="widget" /> <input
+type="hidden" name="redirect_fragment" value="blog_subscription-2" /> <input
+type="submit" value="Subscribe" name="jetpack_subscriptions_widget" /></p></form><script>(function(d){if(('placeholder'in d.createElement('input'))){var label=d.querySelector('label[for=subscribe-field-blog_subscription-2]');label.style.clip='rect(1px, 1px, 1px, 1px)';label.style.position='absolute';label.style.height='1px';label.style.width='1px';label.style.overflow='hidden';}
+var form=d.getElementById('subscribe-blog-blog_subscription-2'),input=d.getElementById('subscribe-field-blog_subscription-2'),handler=function(event){if(''===input.value){input.focus();if(event.preventDefault){event.preventDefault();}
+return false;}};if(window.addEventListener){form.addEventListener('submit',handler,false);}else{form.attachEvent('onsubmit',handler);}})(document);</script></aside><aside
+id="text-11" class="widget inner-padding widget_text"><div
+class="textwidget"><a
+href=http://ai.intelligentonlinetools.com/ml/text-analytics-techniques-embeddings/ target="_blank">Text Analytics Techniques</a> -  Discover how to use <b>word embeddings</b> with machine learning algorithms.</div> </aside><aside
+id="top-posts-3" class="widget inner-padding widget_top-posts"><h4 class="widget-title">Top Posts &amp; Pages</h4><ul><li> <a
+href="http://intelligentonlinetools.com/blog/2018/01/19/machine-learning-stock-prediction-lstm-keras/" class="bump-view" data-bump-view="tp"> Machine Learning Stock Prediction with LSTM and Keras </a></li><li> <a
+href="http://intelligentonlinetools.com/blog/2018/02/27/time-series-prediction-lstm-keras/" class="bump-view" data-bump-view="tp"> Time Series Prediction with LSTM and Keras for Multiple Steps Ahead </a></li><li> <a
+href="http://intelligentonlinetools.com/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/" class="bump-view" data-bump-view="tp"> Forecasting Time Series Data with Convolutional Neural Networks </a></li><li> <a
+href="http://intelligentonlinetools.com/blog/2017/06/17/time-series-prediction-with-convolutional-neural-networks-and-keras/" class="bump-view" data-bump-view="tp"> Time Series Prediction with Convolutional Neural Networks and Keras </a></li><li> <a
+href="http://intelligentonlinetools.com/blog/2017/02/18/building-decision-trees-in-python-handling-categorical-data/" class="bump-view" data-bump-view="tp"> Building Decision Trees in Python - Handling Categorical Data </a></li><li> <a
+href="http://intelligentonlinetools.com/blog/2018/01/20/machine-learning-stock-prediction-lstm-keras-python-source-code/" class="bump-view" data-bump-view="tp"> Machine Learning Stock Prediction with LSTM and Keras - Python Source Code </a></li><li> <a
+href="http://intelligentonlinetools.com/blog/2017/03/25/3-most-useful-examples-to-add-interactivity-to-graph-data-using-bokeh-library/" class="bump-view" data-bump-view="tp"> 3 Most Useful Examples to Add Interactivity to Graph Data Using Bokeh Library </a></li><li> <a
+href="http://intelligentonlinetools.com/blog/2018/02/10/how-to-create-data-visualization-for-association-rules-in-data-mining/" class="bump-view" data-bump-view="tp"> How to Create Data Visualization for Association Rules in Data Mining </a></li><li> <a
+href="http://intelligentonlinetools.com/blog/2016/07/30/automating-csv-file-reading-and-writing-with-python/" class="bump-view" data-bump-view="tp"> Automating CSV File Reading and Writing with Python </a></li></ul></aside><aside
+id="archives-3" class="widget inner-padding widget_archive"><h4 class="widget-title">Archives</h4><ul><li><a
+href='http://intelligentonlinetools.com/blog/2018/04/'>April 2018</a>&nbsp;(2)</li><li><a
+href='http://intelligentonlinetools.com/blog/2018/02/'>February 2018</a>&nbsp;(3)</li><li><a
+href='http://intelligentonlinetools.com/blog/2018/01/'>January 2018</a>&nbsp;(2)</li><li><a
+href='http://intelligentonlinetools.com/blog/2017/12/'>December 2017</a>&nbsp;(2)</li><li><a
+href='http://intelligentonlinetools.com/blog/2017/11/'>November 2017</a>&nbsp;(4)</li><li><a
+href='http://intelligentonlinetools.com/blog/2017/10/'>October 2017</a>&nbsp;(2)</li><li><a
+href='http://intelligentonlinetools.com/blog/2017/07/'>July 2017</a>&nbsp;(2)</li><li><a
+href='http://intelligentonlinetools.com/blog/2017/06/'>June 2017</a>&nbsp;(1)</li><li><a
+href='http://intelligentonlinetools.com/blog/2017/05/'>May 2017</a>&nbsp;(1)</li><li><a
+href='http://intelligentonlinetools.com/blog/2017/04/'>April 2017</a>&nbsp;(2)</li><li><a
+href='http://intelligentonlinetools.com/blog/2017/03/'>March 2017</a>&nbsp;(2)</li><li><a
+href='http://intelligentonlinetools.com/blog/2017/02/'>February 2017</a>&nbsp;(5)</li><li><a
+href='http://intelligentonlinetools.com/blog/2017/01/'>January 2017</a>&nbsp;(4)</li><li><a
+href='http://intelligentonlinetools.com/blog/2016/12/'>December 2016</a>&nbsp;(4)</li><li><a
+href='http://intelligentonlinetools.com/blog/2016/11/'>November 2016</a>&nbsp;(1)</li><li><a
+href='http://intelligentonlinetools.com/blog/2016/10/'>October 2016</a>&nbsp;(3)</li><li><a
+href='http://intelligentonlinetools.com/blog/2016/09/'>September 2016</a>&nbsp;(3)</li><li><a
+href='http://intelligentonlinetools.com/blog/2016/08/'>August 2016</a>&nbsp;(5)</li><li><a
+href='http://intelligentonlinetools.com/blog/2016/07/'>July 2016</a>&nbsp;(3)</li><li><a
+href='http://intelligentonlinetools.com/blog/2016/06/'>June 2016</a>&nbsp;(2)</li><li><a
+href='http://intelligentonlinetools.com/blog/2016/05/'>May 2016</a>&nbsp;(3)</li><li><a
+href='http://intelligentonlinetools.com/blog/2016/04/'>April 2016</a>&nbsp;(1)</li><li><a
+href='http://intelligentonlinetools.com/blog/2016/03/'>March 2016</a>&nbsp;(2)</li><li><a
+href='http://intelligentonlinetools.com/blog/2016/02/'>February 2016</a>&nbsp;(18)</li><li><a
+href='http://intelligentonlinetools.com/blog/2016/01/'>January 2016</a>&nbsp;(5)</li></ul> </aside></div></div></div></div><div
+class="site-footer grid-container grid-parent  "><div
+id="footer-widgets" class="site footer-widgets"><div
+class="footer-widgets-container grid-container grid-parent"><div
+class="inside-footer-widgets"><div
+class="footer-widget-1 grid-parent grid-100 tablet-grid-50 mobile-grid-100"> <aside
+id="text-6" class="widget inner-padding widget_text"><div
+class="textwidget"><script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script><script type="text/javascript">_uacct="UA-2285943-1";urchinTracker();</script></div> </aside></div></div></div></div> <footer
+class="site-info" itemtype="http://schema.org/WPFooter" itemscope="itemscope"><div
+class="inside-site-info grid-container grid-parent"><div
+class="copyright-bar"> <span
+class="copyright">&copy; 2018</span> &bull; <a
+href="https://generatepress.com" target="_blank" itemprop="url">GeneratePress</a></div></div> </footer></div><script type="text/javascript">/*<![CDATA[*/jQuery(document).ready(function(){jQuery('.description').before('<span><!--INFOLINKS_OFF--></span>');jQuery('.description').after('<span><!--INFOLINKS_ON--></span>');jQuery('#headerimg').before('<span><!--INFOLINKS_OFF--></span>');jQuery('#headerimg').after('<span><!--INFOLINKS_ON--></span>');jQuery('h1').before('<span><!--INFOLINKS_OFF--></span>');jQuery('h1').after('<span><!--INFOLINKS_ON--></span>');jQuery('h1').before('<span><!--INFOLINKS_OFF--></span>');jQuery('h1').after('<span><!--INFOLINKS_ON--></span>');});/*]]>*/</script><script type="text/javascript">var infolinks_pid=3070233;var infolinks_plugin_version="WP_3.2.3";var infolinks_resources="https://resources.infolinks.com/js";</script><script type="text/javascript" src="https://resources.infolinks.com/js/infolinks_main.js" ></script><div
+style="display:none"></div><script type="text/javascript">window.WPCOM_sharing_counts={"http:\/\/intelligentonlinetools.com\/blog\/2017\/05\/14\/time-series-prediction-with-convolutional-neural-networks\/":1178};</script><div
+id="sharing_email" style="display: none;"><form
+action="/blog/2017/05/14/time-series-prediction-with-convolutional-neural-networks/" method="post"> <label
+for="target_email">Send to Email Address</label> <input
+type="email" name="target_email" id="target_email" value="" /> <label
+for="source_name">Your Name</label> <input
+type="text" name="source_name" id="source_name" value="" /><label
+for="source_email">Your Email Address</label> <input
+type="email" name="source_email" id="source_email" value="" /><input
+type="text" id="jetpack-source_f_name" name="source_f_name" class="input" value="" size="25" autocomplete="off" /><script>jQuery(document).ready(function(){document.getElementById('jetpack-source_f_name').value=''});</script><img
+style="float: right; display: none" class="loading" src="http://intelligentonlinetools.com/blog/wp-content/plugins/jetpack/modules/sharedaddy/images/loading.gif?39c4bb" alt="loading" width="16" height="16" /> <input
+type="submit" value="Send Email" class="sharing_send" /> <a
+rel="nofollow" href="#cancel" class="sharing_cancel">Cancel</a><div
+class="errors errors-1" style="display: none;"> Post was not sent - check your email addresses!</div><div
+class="errors errors-2" style="display: none;"> Email check failed, please try again</div><div
+class="errors errors-3" style="display: none;"> Sorry, your blog cannot share posts by email.</div></form></div><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-content/plugins/akismet/_inc/form.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-content/plugins/jetpack/modules/photon/photon.js?39c4bb"></script><script type='text/javascript' src='http://s0.wp.com/wp-content/js/devicepx-jetpack.js?ver=201820'></script><script type='text/javascript'>var pollsL10n={"ajax_url":"http:\/\/intelligentonlinetools.com\/blog\/wp-admin\/admin-ajax.php","text_wait":"Your last request is still being processed. Please wait a while ...","text_valid":"Please choose a valid poll answer.","text_multiple":"Maximum number of choices allowed: ","show_loading":"1","show_fading":"1"};</script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-content/plugins/wp-polls/polls-js.js?39c4bb"></script><script type='text/javascript' src='http://s.gravatar.com/js/gprofiles.js?ver=2018Mayaa'></script><script type='text/javascript'>var WPGroHo={"my_hash":""};</script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-content/plugins/jetpack/modules/wpgroho.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-content/themes/generatepress/js/navigation.min.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-content/themes/generatepress/js/dropdown.min.js?39c4bb"></script><!--[if lt IE 9]><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-content/themes/generatepress/js/html5shiv.min.js?39c4bb"></script><![endif]--><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-includes/js/comment-reply.min.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-includes/js/jquery/ui/core.min.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-includes/js/jquery/ui/widget.min.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-includes/js/jquery/ui/mouse.min.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-includes/js/jquery/ui/draggable.min.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-includes/js/jquery/ui/slider.min.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-includes/js/jquery/jquery.ui.touch-punch.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-admin/js/iris.min.js?39c4bb"></script><script type='text/javascript'>var wpColorPickerL10n={"clear":"Clear","defaultString":"Default","pick":"Select Color","current":"Current Color"};</script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-admin/js/color-picker.min.js?39c4bb"></script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-includes/js/wp-embed.min.js?39c4bb"></script><script type='text/javascript'>var sharing_js_options={"lang":"en","counts":"1"};</script><script type='text/javascript' src="http://intelligentonlinetools.com/blog/wp-content/plugins/jetpack/modules/sharedaddy/sharing.js?39c4bb"></script><script type='text/javascript'>var windowOpen;jQuery(document.body).on('click','a.share-twitter',function(){if('undefined'!==typeof windowOpen){windowOpen.close();}
+windowOpen=window.open(jQuery(this).attr('href'),'wpcomtwitter','menubar=1,resizable=1,width=600,height=350');return false;});var windowOpen;jQuery(document.body).on('click','a.share-facebook',function(){if('undefined'!==typeof windowOpen){windowOpen.close();}
+windowOpen=window.open(jQuery(this).attr('href'),'wpcomfacebook','menubar=1,resizable=1,width=600,height=400');return false;});var windowOpen;jQuery(document.body).on('click','a.share-google-plus-1',function(){if('undefined'!==typeof windowOpen){windowOpen.close();}
+windowOpen=window.open(jQuery(this).attr('href'),'wpcomgoogle-plus-1','menubar=1,resizable=1,width=480,height=550');return false;});var windowOpen;jQuery(document.body).on('click','a.share-linkedin',function(){if('undefined'!==typeof windowOpen){windowOpen.close();}
+windowOpen=window.open(jQuery(this).attr('href'),'wpcomlinkedin','menubar=1,resizable=1,width=580,height=450');return false;});var windowOpen;jQuery(document.body).on('click','a.share-tumblr',function(){if('undefined'!==typeof windowOpen){windowOpen.close();}
+windowOpen=window.open(jQuery(this).attr('href'),'wpcomtumblr','menubar=1,resizable=1,width=450,height=450');return false;});</script><script type='text/javascript' src='http://stats.wp.com/e-201820.js' async defer></script><script type='text/javascript'>_stq=window._stq||[];_stq.push(['view',{v:'ext',j:'1:4.4.2',blog:'107492545',post:'1178',tz:'0',srv:'intelligentonlinetools.com'}]);_stq.push(['clickTrackerInit','107492545','1178']);</script></body></html>
