@@ -11,7 +11,7 @@ class GetData():
         self.user_balance = pd.read_csv(file_path)
 
     def get_day_balance(self):
-        day_balance = self.user_balance[['report_date', 'tBalance', 'yBalance']]
+        day_balance = self.user_balance[['report_date', 'yBalance', 'tBalance']]
         day_balance['report_date'] = pd.to_datetime(day_balance['report_date'], format=('%Y%m%d'))
         day_balance = day_balance.set_index('report_date')
         day_balance_sum = day_balance.resample('d').sum()
