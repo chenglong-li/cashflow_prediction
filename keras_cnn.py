@@ -52,12 +52,13 @@ def make_timeseries_regressor(window_size, filter_length, nb_input_series=1, nb_
         Convolution1D(nb_filter=nb_filter, filter_length=filter_length, activation='relu',
                       input_shape=(window_size, nb_input_series)),
         MaxPooling1D(),  # Downsample the output of convolution by 2X.
-        Convolution1D(nb_filter=nb_filter, filter_length=filter_length, activation='relu'),
+        Convolution1D(nb_filter=nb_filter * 2, filter_length=filter_length, activation='relu'),
         MaxPooling1D(),
         Flatten(),
         Dense(nb_outputs, activation='linear'),  # For binary classification, change the activation to 'sigmoid'
     ))
-    model.compile(loss='mse', optimizer='adam', metrics=['mae'])
+#     sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+    model.compile(loss='mse', optimizer='adam', metrics=['accuracy'])
     # To perform (binary) classification instead:
     # model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['binary_accuracy'])
     return model
